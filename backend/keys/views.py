@@ -1,3 +1,8 @@
-from django.shortcuts import render
+from rest_framework import viewsets
+from keys.models import Secret
+from keys.serializers import SecretSerializer
 
-# Create your views here.
+
+class SecretViewSet(viewsets.ModelViewSet):
+    queryset = Secret.objects.all()
+    serializer_class = SecretSerializer
