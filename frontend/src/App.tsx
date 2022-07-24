@@ -1,7 +1,19 @@
 import "./App.css";
-import "bootstrap/dist/css/bootstrap.css";
+import axios from "axios";
+import { useEffect } from "react";
 
 function App() {
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/secrets/");
+        console.log(response.data);
+      } catch (error) {
+        console.error();
+      }
+    })();
+  }, []);
+
   return (
     <div className="mt-5">
       <form className="mx-auto d-flex flex-column shadow-sm mw-sm p-5">
