@@ -3,7 +3,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { ToastContainer } from "react-toastify";
-import { errorToast } from "./utils/toast";
+import { errorToast, successToast } from "./utils/toast";
 
 import "react-toastify/dist/ReactToastify.min.css";
 
@@ -16,8 +16,8 @@ function App() {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      const response = await axios.post("http://localhost:8000/secrets/", data);
-      console.log(response);
+      await axios.post("http://localhost:8000/secrets/", data);
+      successToast("Successfully added key");
     } catch (error) {
       console.error(error);
       errorToast("Failed to add key");
