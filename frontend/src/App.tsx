@@ -10,7 +10,14 @@ function App() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = handleSubmit((data) => console.log(data));
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      const response = await axios.post("http://localhost:8000/secrets/", data);
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  });
 
   useEffect(() => {
     (async () => {
