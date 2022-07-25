@@ -41,6 +41,7 @@ function App() {
               message: "Only 100 characters is allowed",
             },
           })}
+          id="key"
           className="form-control form-control-lg"
         />
         {typeof errors.key?.message === "string" && (
@@ -51,9 +52,18 @@ function App() {
         </label>
         <input
           id="value"
-          type="text"
+          {...register("value", {
+            required: "Value is required",
+            maxLength: {
+              value: 100,
+              message: "Only 100 characters is allowed",
+            },
+          })}
           className="form-control form-control-lg"
         />
+        {typeof errors.value?.message === "string" && (
+          <p className="text-danger m-0">{errors.value?.message}</p>
+        )}
         <button className="btn btn-primary mt-5 btn-lg">Submit</button>
       </form>
     </div>
