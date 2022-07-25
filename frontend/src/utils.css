@@ -18,3 +18,17 @@
 .mw-xxl {
   max-width: 1400px;
 }
+
+/* scrollbar */
+.scrollbar::-webkit-scrollbar {
+  width: 0.3rem;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 1rem;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  background: #fcfcfc;
+}

@@ -1,20 +1,27 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { errorToast, successToast } from "../utils/toast";
 import axios from "axios";
-
 import "react-toastify/dist/ReactToastify.min.css";
+
+interface Keys {
+  id: number;
+  key: string;
+  value: string;
+}
 
 const Home = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<Keys>();
+  const [keys, setKeys] = useState<Keys[]>([]);
 
   const onSubmit = handleSubmit(async (data) => {
     try {
       await axios.post("http://localhost:8000/secrets/", data);
+      setKeys((prev) => [...prev, data]);
       successToast("Successfully added key");
     } catch (error) {
       console.error(error);
@@ -26,7 +33,7 @@ const Home = () => {
     (async () => {
       try {
         const response = await axios.get("http://localhost:8000/secrets/");
-        console.log(response.data);
+        setKeys(response.data);
       } catch (error) {
         console.error(error);
       }
@@ -34,47 +41,67 @@ const Home = () => {
   }, []);
 
   return (
-    <form
-      className="mx-auto d-flex flex-column shadow-sm mw-sm p-5 mt-5"
-      onSubmit={onSubmit}
-    >
-      <h1>Create a Secret</h1>
-      <label htmlFor="key" className="form-label mt-4">
-        Key
-      </label>
-      <input
-        {...register("key", {
-          required: "Key is required",
-          maxLength: {
-            value: 100,
-            message: "Only 100 characters is allowed",
-          },
-        })}
-        id="key"
-        className="form-control form-control-lg"
-      />
-      {typeof errors.key?.message === "string" && (
-        <p className="text-danger m-0">{errors.key?.message}</p>
-      )}
-      <label htmlFor="value" className="form-label mt-3">
-        Value
-      </label>
-      <input
-        id="value"
-        {...register("value", {
-          required: "Value is required",
-          maxLength: {
-            value: 100,
-            message: "Only 100 characters is allowed",
-          },
-        })}
-        className="form-control form-control-lg"
-      />
-      {typeof errors.value?.message === "string" && (
-        <p className="text-danger m-0">{errors.value?.message}</p>
-      )}
-      <button className="btn btn-primary mt-5 btn-lg">Submit</button>
-    </form>
+    <section className="d-flex gap-3 p-5 justify-content-center align-items-start">
+      <form
+        className="d-flex flex-column shadow-sm mw-sm mt-5 w-100 p-5"
+        onSubmit={onSubmit}
+      >
+        <h2>Create a Key</h2>
+        <label htmlFor="key" className="form-label mt-4">
+          Key
+        </label>
+        <input
+          {...register("key", {
+            required: "Key is required",
+            maxLength: {
+              value: 100,
+              message: "Only 100 characters is allowed",
+            },
+          })}
+          id="key"
+          className="form-control form-control-lg"
+        />
+        {typeof errors.key?.message === "string" && (
+          <p className="text-danger m-0">{errors.key?.message}</p>
+        )}
+        <label htmlFor="value" className="form-label mt-3">
+          Value
+        </label>
+        <input
+          id="value"
+          {...register("value", {
+            required: "Value is required",
+            maxLength: {
+              value: 100,
+              message: "Only 100 characters is allowed",
+            },
+          })}
+          className="form-control form-control-lg"
+        />
+        {typeof errors.value?.message === "string" && (
+          <p className="text-danger m-0">{errors.value?.message}</p>
+        )}
+        <button className="btn btn-primary mt-5 btn-lg">Submit</button>
+      </form>
+      <div className="mw-md w-100 p-5 shadow-sm mt-5">
+        <h2>Keys</h2>
+        <div className="d-flex flex-column gap-4 mt-4">
+          {keys.map((key) => (
+            <div key={key.id}>
+              <label htmlFor={`key-${key.id}`} className="form-label">
+                {key.key}
+              </label>
+              <input
+                className="form-control form-control-lg"
+                id={`key-${key.id}`}
+                value={key.value}
+                readOnly
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 };
 
