@@ -2,6 +2,10 @@ import "./App.css";
 import axios from "axios";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { ToastContainer } from "react-toastify";
+import { errorToast } from "./utils/toast";
+
+import "react-toastify/dist/ReactToastify.min.css";
 
 function App() {
   const {
@@ -16,6 +20,7 @@ function App() {
       console.log(response);
     } catch (error) {
       console.error(error);
+      errorToast("Failed to add key");
     }
   });
 
@@ -25,7 +30,7 @@ function App() {
         const response = await axios.get("http://localhost:8000/secrets/");
         console.log(response.data);
       } catch (error) {
-        console.error();
+        console.error(error);
       }
     })();
   }, []);
@@ -73,6 +78,7 @@ function App() {
         )}
         <button className="btn btn-primary mt-5 btn-lg">Submit</button>
       </form>
+      <ToastContainer />
     </div>
   );
 }
