@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { errorToast, successToast } from "../utils/toast";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.min.css";
+import { AiFillDelete } from "react-icons/ai";
 
 interface Keys {
   id: number;
@@ -91,12 +92,17 @@ const Home = () => {
               <label htmlFor={`key-${key.id}`} className="form-label">
                 {key.key}
               </label>
-              <input
-                className="form-control form-control-lg"
-                id={`key-${key.id}`}
-                value={key.value}
-                readOnly
-              />
+              <div className="d-flex gap-3 align-items-center">
+                <input
+                  className="form-control form-control-lg"
+                  id={`key-${key.id}`}
+                  value={key.value}
+                  readOnly
+                />
+                <button>
+                  <AiFillDelete size={30} color="rgb(220, 53, 69)" />
+                </button>
+              </div>
             </div>
           ))}
         </div>
