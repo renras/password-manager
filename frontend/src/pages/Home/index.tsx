@@ -8,6 +8,7 @@ import { filter } from "lodash";
 import { AiOutlinePlus } from "react-icons/ai";
 import AddKeyForm from "./AddKeyForm/AddKeyForm";
 import { Keys } from "../../types/keys";
+import { FiEdit } from "react-icons/fi";
 
 const Home = () => {
   const {
@@ -18,6 +19,7 @@ const Home = () => {
   } = useForm<Keys>();
   const [keys, setKeys] = useState<Keys[]>([]);
   const [isAddingKey, setIsAddingKey] = useState(false);
+  const [isEditingKey, setIsEditingKey] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -54,8 +56,13 @@ const Home = () => {
     }
   };
 
-  const handleCancelKeySubmission = () => {
+  const handleCancelAddKey = () => {
     setIsAddingKey(false);
+    reset();
+  };
+
+  const handleCancelEditKey = () => {
+    setIsEditingKey(false);
     reset();
   };
 
@@ -76,26 +83,40 @@ const Home = () => {
                   value={key.value}
                   readOnly
                 />
+                <button onClick={() => setIsEditingKey(true)}>
+                  <FiEdit size={30} color="rgb(25, 135, 84)" />
+                </button>
                 <button onClick={() => handleDeleteKey(key.id)}>
                   <AiFillDelete size={30} color="rgb(220, 53, 69)" />
                 </button>
               </div>
             </div>
           ))}
-          {!isAddingKey && (
-            <button
-              className="btn btn-primary btn-lg"
-              onClick={() => setIsAddingKey(true)}
-            >
-              <AiOutlinePlus size={30} />
-            </button>
+          {!(isAddingKey || isEditingKey) && (
+            <>
+              <button
+                className="btn btn-primary btn-lg"
+                onClick={() => setIsAddingKey(true)}
+              >
+                <AiOutlinePlus size={30} />
+              </button>
+            </>
           )}
           {isAddingKey && (
             <AddKeyForm
               onSubmit={onSubmit}
               register={register}
               errors={errors}
-              onCancel={handleCancelKeySubmission}
+              onCancel={handleCancelAddKey}
+            />
+          )}
+          {isEditingKey && (
+            <AddKeyForm
+              onSubmit={onSubmit}
+              register={register}
+              errors={errors}
+              onCancel={handleCancelEditKey}
+              id={24}
             />
           )}
         </div>

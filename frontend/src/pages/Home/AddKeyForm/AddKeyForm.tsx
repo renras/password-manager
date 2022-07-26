@@ -4,8 +4,11 @@ import {
   DeepRequired,
 } from "react-hook-form";
 import { Keys } from "../../../types/keys";
+import { useEffect } from "react";
+import axios from "axios";
 
 interface Props {
+  id?: number;
   onSubmit: (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     e?: React.BaseSyntheticEvent<object, any, any> | undefined
@@ -15,7 +18,22 @@ interface Props {
   onCancel: () => void;
 }
 
-const AddKeyForm = ({ onSubmit, register, errors, onCancel }: Props) => {
+const AddKeyForm = ({ onSubmit, register, errors, onCancel, id }: Props) => {
+  useEffect(() => {
+    if (id) {
+      (async () => {
+        try {
+          const response = await axios.get(
+            `http://localhost:8000/secrets/${id}/`
+          );
+          console.log(response.data);
+        } catch (error) {
+          console.error(error);
+        }
+      })();
+    }
+  }, []);
+
   return (
     <form
       className="d-flex flex-column shadow-sm mt-5 w-100 p-5"
