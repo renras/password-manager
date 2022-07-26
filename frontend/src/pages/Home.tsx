@@ -4,6 +4,7 @@ import { errorToast, successToast } from "../utils/toast";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.min.css";
 import { AiFillDelete } from "react-icons/ai";
+import { filter } from "lodash";
 
 interface Keys {
   id: number;
@@ -21,14 +22,26 @@ const Home = () => {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await axios.post("http://localhost:8000/secrets/", data);
-      setKeys((prev) => [...prev, data]);
+      const response = await axios.post("http://localhost:8000/secrets/", data);
+      setKeys((prev) => [...prev, response.data]);
       successToast("Successfully added key");
     } catch (error) {
       console.error(error);
       errorToast("Failed to add key");
     }
   });
+
+  const handleDeleteKey = async (id: number) => {
+    try {
+      await axios.delete(`http://localhost:8000/secrets/${id}/`);
+      const filteredArr = filter(keys, (key) => key.id !== id);
+      setKeys(filteredArr);
+      successToast("Successfuly deleted key");
+    } catch (error) {
+      console.error(error);
+      errorToast("Failed to delete key");
+    }
+  };
 
   useEffect(() => {
     (async () => {
@@ -99,7 +112,7 @@ const Home = () => {
                   value={key.value}
                   readOnly
                 />
-                <button>
+                <button onClick={() => handleDeleteKey(key.id)}>
                   <AiFillDelete size={30} color="rgb(220, 53, 69)" />
                 </button>
               </div>
