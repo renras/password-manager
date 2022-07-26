@@ -1,16 +1,13 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { errorToast, successToast } from "../utils/toast";
+import { errorToast, successToast } from "../../utils/toast";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.min.css";
 import { AiFillDelete } from "react-icons/ai";
 import { filter } from "lodash";
-
-interface Keys {
-  id: number;
-  key: string;
-  value: string;
-}
+import { AiOutlinePlus } from "react-icons/ai";
+import AddKeyForm from "./AddKeyForm/AddKeyForm";
+import { Keys } from "../../types/keys";
 
 const Home = () => {
   const {
@@ -57,7 +54,7 @@ const Home = () => {
     }
   };
 
-  const handleCancelisAddingKey = () => {
+  const handleCancelKeySubmission = () => {
     setIsAddingKey(false);
     reset();
   };
@@ -90,59 +87,16 @@ const Home = () => {
               className="btn btn-primary btn-lg"
               onClick={() => setIsAddingKey(true)}
             >
-              New Key
+              <AiOutlinePlus size={30} />
             </button>
           )}
           {isAddingKey && (
-            <form
-              className="d-flex flex-column shadow-sm mt-5 w-100 p-5"
+            <AddKeyForm
               onSubmit={onSubmit}
-            >
-              <label htmlFor="key" className="form-label  ">
-                Key
-              </label>
-              <input
-                {...register("key", {
-                  required: "Key is required",
-                  maxLength: {
-                    value: 100,
-                    message: "Only 100 characters is allowed",
-                  },
-                })}
-                id="key"
-                className="form-control form-control-lg"
-              />
-              {typeof errors.key?.message === "string" && (
-                <p className="text-danger m-0">{errors.key?.message}</p>
-              )}
-              <label htmlFor="value" className="form-label mt-3">
-                Value
-              </label>
-              <input
-                id="value"
-                {...register("value", {
-                  required: "Value is required",
-                  maxLength: {
-                    value: 100,
-                    message: "Only 100 characters is allowed",
-                  },
-                })}
-                className="form-control form-control-lg"
-              />
-              {typeof errors.value?.message === "string" && (
-                <p className="text-danger m-0">{errors.value?.message}</p>
-              )}
-              <div className="d-flex gap-2 mt-5">
-                <button
-                  type="button"
-                  className="btn btn-outline-primary btn-lg w-100"
-                  onClick={handleCancelisAddingKey}
-                >
-                  Cancel
-                </button>
-                <button className="btn btn-primary btn-lg w-100">Submit</button>
-              </div>
-            </form>
+              register={register}
+              errors={errors}
+              onCancel={handleCancelKeySubmission}
+            />
           )}
         </div>
       </div>
