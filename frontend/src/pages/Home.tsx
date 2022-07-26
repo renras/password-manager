@@ -19,11 +19,13 @@ const Home = () => {
     formState: { errors },
   } = useForm<Keys>();
   const [keys, setKeys] = useState<Keys[]>([]);
+  const [isAddingKey, setIsAddingKey] = useState(false);
 
   const onSubmit = handleSubmit(async (data) => {
     try {
       const response = await axios.post("http://localhost:8000/secrets/", data);
       setKeys((prev) => [...prev, response.data]);
+      setIsAddingKey(false);
       successToast("Successfully added key");
     } catch (error) {
       console.error(error);
@@ -56,47 +58,6 @@ const Home = () => {
 
   return (
     <section className="d-flex gap-3 p-5 justify-content-center align-items-start">
-      <form
-        className="d-flex flex-column shadow-sm mw-sm mt-5 w-100 p-5"
-        onSubmit={onSubmit}
-      >
-        <h2>Create a Key</h2>
-        <label htmlFor="key" className="form-label mt-4">
-          Key
-        </label>
-        <input
-          {...register("key", {
-            required: "Key is required",
-            maxLength: {
-              value: 100,
-              message: "Only 100 characters is allowed",
-            },
-          })}
-          id="key"
-          className="form-control form-control-lg"
-        />
-        {typeof errors.key?.message === "string" && (
-          <p className="text-danger m-0">{errors.key?.message}</p>
-        )}
-        <label htmlFor="value" className="form-label mt-3">
-          Value
-        </label>
-        <input
-          id="value"
-          {...register("value", {
-            required: "Value is required",
-            maxLength: {
-              value: 100,
-              message: "Only 100 characters is allowed",
-            },
-          })}
-          className="form-control form-control-lg"
-        />
-        {typeof errors.value?.message === "string" && (
-          <p className="text-danger m-0">{errors.value?.message}</p>
-        )}
-        <button className="btn btn-primary mt-5 btn-lg">Submit</button>
-      </form>
       <div className="mw-md w-100 p-5 shadow-sm mt-5">
         <h2>Keys</h2>
         <div className="d-flex flex-column gap-4 mt-4">
@@ -118,6 +79,64 @@ const Home = () => {
               </div>
             </div>
           ))}
+          {!isAddingKey && (
+            <button
+              className="btn btn-primary btn-lg"
+              onClick={() => setIsAddingKey(true)}
+            >
+              New Key
+            </button>
+          )}
+          {isAddingKey && (
+            <form
+              className="d-flex flex-column shadow-sm mt-5 w-100 p-5"
+              onSubmit={onSubmit}
+            >
+              <label htmlFor="key" className="form-label mt-4">
+                Key
+              </label>
+              <input
+                {...register("key", {
+                  required: "Key is required",
+                  maxLength: {
+                    value: 100,
+                    message: "Only 100 characters is allowed",
+                  },
+                })}
+                id="key"
+                className="form-control form-control-lg"
+              />
+              {typeof errors.key?.message === "string" && (
+                <p className="text-danger m-0">{errors.key?.message}</p>
+              )}
+              <label htmlFor="value" className="form-label mt-3">
+                Value
+              </label>
+              <input
+                id="value"
+                {...register("value", {
+                  required: "Value is required",
+                  maxLength: {
+                    value: 100,
+                    message: "Only 100 characters is allowed",
+                  },
+                })}
+                className="form-control form-control-lg"
+              />
+              {typeof errors.value?.message === "string" && (
+                <p className="text-danger m-0">{errors.value?.message}</p>
+              )}
+              <div className="d-flex gap-2 mt-5">
+                <button
+                  className="btn btn-outline-primary btn-lg w-100"
+                  onClick={() => setIsAddingKey(false)}
+                >
+                  Cancel
+                </button>
+                <button className="btn btn-primary btn-lg w-100">Submit</button>
+              </div>
+            </form>
+          )}
         </div>
       </div>
     </section>
