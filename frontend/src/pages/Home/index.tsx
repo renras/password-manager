@@ -4,7 +4,7 @@ import { errorToast, successToast } from "../../utils/toast";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.min.css";
 import { AiFillDelete } from "react-icons/ai";
-import { filter, find } from "lodash";
+import { filter, find, findIndex } from "lodash";
 import { AiOutlinePlus } from "react-icons/ai";
 import AddKeyForm from "./AddKeyForm/AddKeyForm";
 import { Key } from "../../types/keys";
@@ -32,12 +32,30 @@ const Home = () => {
     })();
   }, []);
 
-  const onSubmit = handleSubmit(async (data) => {
+  const handleAddKey = handleSubmit(async (data) => {
     try {
       const response = await axios.post("http://localhost:8000/secrets/", data);
       setKeys((prev) => [...prev, response.data]);
       setIsAddingKey(false);
       successToast("Successfully added key");
+    } catch (error) {
+      console.error(error);
+      errorToast("Failed to add key");
+    }
+  });
+
+  const handleEditKey = handleSubmit(async (data) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:8000/secrets/${editKeyId}/`,
+        data
+      );
+      const index = findIndex(keys, (key) => key.id === response.data.id);
+      const newArr = keys;
+      newArr[index] = response.data;
+      setKeys(newArr);
+      setEditKeyId(null);
+      successToast("Successfully edited key");
     } catch (error) {
       console.error(error);
       errorToast("Failed to add key");
@@ -104,7 +122,7 @@ const Home = () => {
           )}
           {isAddingKey && (
             <AddKeyForm
-              onSubmit={onSubmit}
+              onSubmit={handleAddKey}
               register={register}
               errors={errors}
               onCancel={handleCancelAddKey}
@@ -112,7 +130,7 @@ const Home = () => {
           )}
           {editKeyId && (
             <AddKeyForm
-              onSubmit={onSubmit}
+              onSubmit={handleEditKey}
               register={register}
               errors={errors}
               onCancel={handleCancelEditKey}
