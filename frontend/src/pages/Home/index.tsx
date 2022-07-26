@@ -9,6 +9,7 @@ import { AiOutlinePlus } from "react-icons/ai";
 import AddKeyForm from "./AddKeyForm/AddKeyForm";
 import { Key } from "../../types/keys";
 import { FiEdit } from "react-icons/fi";
+import { v4 as uuidv4 } from "uuid";
 
 const Home = () => {
   const {
@@ -55,6 +56,7 @@ const Home = () => {
       newArr[index] = response.data;
       setKeys(newArr);
       setEditKeyId(null);
+      reset();
       successToast("Successfully edited key");
     } catch (error) {
       console.error(error);
@@ -88,53 +90,70 @@ const Home = () => {
     <section className="d-flex gap-3 p-5 justify-content-center align-items-start">
       <div className="mw-md w-100 p-5 shadow-sm mt-5">
         <h2>Keys</h2>
+
+        {/* keys */}
         <div className="d-flex flex-column gap-4 mt-4">
-          {keys.map((key) => (
-            <div key={key.id}>
-              <label htmlFor={`key-${key.id}`} className="form-label">
-                {key.key}
-              </label>
-              <div className="d-flex gap-3 align-items-center">
-                <input
-                  className="form-control form-control-lg"
-                  id={`key-${key.id}`}
-                  value={key.value}
-                  readOnly
+          {keys.map((key) => {
+            {
+              /* render an edit form if edit button is clicked */
+            }
+            if (editKeyId === key.id)
+              return (
+                <AddKeyForm
+                  key={uuidv4()}
+                  onSubmit={handleEditKey}
+                  register={register}
+                  errors={errors}
+                  onCancel={handleCancelEditKey}
+                  _key={find(keys, (key) => key.id === editKeyId)}
                 />
-                <button onClick={() => setEditKeyId(key.id)}>
-                  <FiEdit size={30} color="rgb(25, 135, 84)" />
-                </button>
-                <button onClick={() => handleDeleteKey(key.id)}>
-                  <AiFillDelete size={30} color="rgb(220, 53, 69)" />
-                </button>
+              );
+
+            {
+              /* render the key if not editing */
+            }
+            return (
+              <div key={key.id}>
+                <label htmlFor={`key-${key.id}`} className="form-label">
+                  {key.key}
+                </label>
+                <div className="d-flex gap-3 align-items-center">
+                  <input
+                    className="form-control form-control-lg"
+                    id={`key-${key.id}`}
+                    value={key.value}
+                    readOnly
+                  />
+                  <button onClick={() => setEditKeyId(key.id)}>
+                    <FiEdit size={30} color="rgb(25, 135, 84)" />
+                  </button>
+                  <button onClick={() => handleDeleteKey(key.id)}>
+                    <AiFillDelete size={30} color="rgb(220, 53, 69)" />
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
+
+          {/* hide add key button while adding or editing a key */}
           {!(isAddingKey || editKeyId) && (
             <>
               <button
-                className="btn btn-primary btn-lg"
+                className="btn btn-primary btn-lg mt-5"
                 onClick={() => setIsAddingKey(true)}
               >
                 <AiOutlinePlus size={30} />
               </button>
             </>
           )}
+
+          {/* render add key form if add key button is clicked */}
           {isAddingKey && (
             <AddKeyForm
               onSubmit={handleAddKey}
               register={register}
               errors={errors}
               onCancel={handleCancelAddKey}
-            />
-          )}
-          {editKeyId && (
-            <AddKeyForm
-              onSubmit={handleEditKey}
-              register={register}
-              errors={errors}
-              onCancel={handleCancelEditKey}
-              _key={find(keys, (key) => key.id === editKeyId)}
             />
           )}
         </div>
