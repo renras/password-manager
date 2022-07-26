@@ -3,37 +3,20 @@ import {
   FieldErrorsImpl,
   DeepRequired,
 } from "react-hook-form";
-import { Keys } from "../../../types/keys";
-import { useEffect } from "react";
-import axios from "axios";
+import { Key } from "../../../types/keys";
 
 interface Props {
-  id?: number;
   onSubmit: (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     e?: React.BaseSyntheticEvent<object, any, any> | undefined
   ) => Promise<void>;
-  register: UseFormRegister<Keys>;
-  errors: FieldErrorsImpl<DeepRequired<Keys>>;
+  register: UseFormRegister<Key>;
+  errors: FieldErrorsImpl<DeepRequired<Key>>;
   onCancel: () => void;
+  _key?: Key;
 }
 
-const AddKeyForm = ({ onSubmit, register, errors, onCancel, id }: Props) => {
-  useEffect(() => {
-    if (id) {
-      (async () => {
-        try {
-          const response = await axios.get(
-            `http://localhost:8000/secrets/${id}/`
-          );
-          console.log(response.data);
-        } catch (error) {
-          console.error(error);
-        }
-      })();
-    }
-  }, []);
-
+const AddKeyForm = ({ onSubmit, register, errors, onCancel, _key }: Props) => {
   return (
     <form
       className="d-flex flex-column shadow-sm mt-5 w-100 p-5"
@@ -52,6 +35,7 @@ const AddKeyForm = ({ onSubmit, register, errors, onCancel, id }: Props) => {
         })}
         id="key"
         className="form-control form-control-lg"
+        defaultValue={_key?.key}
       />
       {typeof errors.key?.message === "string" && (
         <p className="text-danger m-0">{errors.key?.message}</p>
@@ -69,6 +53,7 @@ const AddKeyForm = ({ onSubmit, register, errors, onCancel, id }: Props) => {
           },
         })}
         className="form-control form-control-lg"
+        defaultValue={_key?.value}
       />
       {typeof errors.value?.message === "string" && (
         <p className="text-danger m-0">{errors.value?.message}</p>

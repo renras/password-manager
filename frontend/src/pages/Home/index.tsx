@@ -4,10 +4,10 @@ import { errorToast, successToast } from "../../utils/toast";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.min.css";
 import { AiFillDelete } from "react-icons/ai";
-import { filter } from "lodash";
+import { filter, find } from "lodash";
 import { AiOutlinePlus } from "react-icons/ai";
 import AddKeyForm from "./AddKeyForm/AddKeyForm";
-import { Keys } from "../../types/keys";
+import { Key } from "../../types/keys";
 import { FiEdit } from "react-icons/fi";
 
 const Home = () => {
@@ -16,10 +16,10 @@ const Home = () => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<Keys>();
-  const [keys, setKeys] = useState<Keys[]>([]);
+  } = useForm<Key>();
+  const [keys, setKeys] = useState<Key[]>([]);
   const [isAddingKey, setIsAddingKey] = useState(false);
-  const [isEditingKey, setIsEditingKey] = useState(false);
+  const [editKeyId, setEditKeyId] = useState<number | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -62,7 +62,7 @@ const Home = () => {
   };
 
   const handleCancelEditKey = () => {
-    setIsEditingKey(false);
+    setEditKeyId(null);
     reset();
   };
 
@@ -83,7 +83,7 @@ const Home = () => {
                   value={key.value}
                   readOnly
                 />
-                <button onClick={() => setIsEditingKey(true)}>
+                <button onClick={() => setEditKeyId(key.id)}>
                   <FiEdit size={30} color="rgb(25, 135, 84)" />
                 </button>
                 <button onClick={() => handleDeleteKey(key.id)}>
@@ -92,7 +92,7 @@ const Home = () => {
               </div>
             </div>
           ))}
-          {!(isAddingKey || isEditingKey) && (
+          {!(isAddingKey || editKeyId) && (
             <>
               <button
                 className="btn btn-primary btn-lg"
@@ -110,13 +110,13 @@ const Home = () => {
               onCancel={handleCancelAddKey}
             />
           )}
-          {isEditingKey && (
+          {editKeyId && (
             <AddKeyForm
               onSubmit={onSubmit}
               register={register}
               errors={errors}
               onCancel={handleCancelEditKey}
-              id={24}
+              _key={find(keys, (key) => key.id === editKeyId)}
             />
           )}
         </div>
