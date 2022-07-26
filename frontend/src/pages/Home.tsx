@@ -16,10 +16,22 @@ const Home = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<Keys>();
   const [keys, setKeys] = useState<Keys[]>([]);
   const [isAddingKey, setIsAddingKey] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/secrets/");
+        setKeys(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  }, []);
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -45,16 +57,10 @@ const Home = () => {
     }
   };
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const response = await axios.get("http://localhost:8000/secrets/");
-        setKeys(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    })();
-  }, []);
+  const handleCancelisAddingKey = () => {
+    setIsAddingKey(false);
+    reset();
+  };
 
   return (
     <section className="d-flex gap-3 p-5 justify-content-center align-items-start">
@@ -92,7 +98,7 @@ const Home = () => {
               className="d-flex flex-column shadow-sm mt-5 w-100 p-5"
               onSubmit={onSubmit}
             >
-              <label htmlFor="key" className="form-label mt-4">
+              <label htmlFor="key" className="form-label  ">
                 Key
               </label>
               <input
@@ -128,8 +134,9 @@ const Home = () => {
               )}
               <div className="d-flex gap-2 mt-5">
                 <button
+                  type="button"
                   className="btn btn-outline-primary btn-lg w-100"
-                  onClick={() => setIsAddingKey(false)}
+                  onClick={handleCancelisAddingKey}
                 >
                   Cancel
                 </button>
