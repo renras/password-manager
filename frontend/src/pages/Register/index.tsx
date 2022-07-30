@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import isEmail from "validator/lib/isEmail";
 
 interface FormData {
   username: string;
@@ -55,6 +56,9 @@ const Login = () => {
             maxLength: {
               value: 100,
               message: "Only 100 characters is allowed",
+            },
+            validate: {
+              isEmail: (v) => isEmail(v) || "Please enter a valid email",
             },
           })}
         />
