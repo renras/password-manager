@@ -37,7 +37,7 @@ const AddKeyForm = ({ onSubmit, register, errors, onCancel, _key }: Props) => {
         className="form-control form-control-lg"
         defaultValue={_key?.key}
       />
-      {typeof errors.key?.message === "string" && (
+      {errors.key?.message && (
         <p className="text-danger m-0">{errors.key?.message}</p>
       )}
       <label htmlFor="value" className="form-label mt-3">
@@ -55,7 +55,7 @@ const AddKeyForm = ({ onSubmit, register, errors, onCancel, _key }: Props) => {
         className="form-control form-control-lg"
         defaultValue={_key?.value}
       />
-      {typeof errors.value?.message === "string" && (
+      {errors.value?.message && (
         <p className="text-danger m-0">{errors.value?.message}</p>
       )}
       <div className="d-flex gap-2 mt-5">
