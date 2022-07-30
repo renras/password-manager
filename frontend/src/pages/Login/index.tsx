@@ -61,7 +61,7 @@ const Login = () => {
           <p className="text-danger m-0">{errors.password?.message}</p>
         )}
 
-        <button className="btn btn-primary mt-5 w-100">LOGIN</button>
+        <button className="btn btn-primary btn-lg mt-5 w-100">LOGIN</button>
         <div className="mt-4 m-auto">
           Don&apos;t have an account yet?{" "}
           <Link to="/register">Create a new account</Link>

@@ -106,7 +106,7 @@ const Login = () => {
           <p className="text-danger m-0">{errors.confirmPassword?.message}</p>
         )}
 
-        <button className="btn btn-primary mt-5 w-100">SIGN UP</button>
+        <button className="btn btn-primary btn-lg mt-5 w-100">SIGN UP</button>
         <div className="mt-4 m-auto">
           Already have an account? <Link to="/login">Log in</Link>
         </div>

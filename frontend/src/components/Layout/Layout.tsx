@@ -9,7 +9,9 @@ const Layout = ({ children }: Props) => {
     <>
       <header className="shadow-sm py-2 px-4">
         <div className="mw-xl w-100 m-auto d-flex align-items-center">
-          <h1>KEYS MANAGER</h1>
+          <Link to="/" className="h1 text-dark text-decoration-none">
+            KEYS MANAGER
+          </Link>
           <Link to="/login" className="ms-auto btn btn-primary">
             Login
           </Link>
