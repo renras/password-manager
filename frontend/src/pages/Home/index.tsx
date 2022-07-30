@@ -25,7 +25,7 @@ const Home = () => {
   useEffect(() => {
     (async () => {
       try {
-        const response = await axios.get("http://localhost:8000/secrets/");
+        const response = await axios.get("http://localhost:8000/keys/");
         setKeys(response.data);
       } catch (error) {
         console.error(error);
@@ -35,7 +35,7 @@ const Home = () => {
 
   const handleAddKey = handleSubmit(async (data) => {
     try {
-      const response = await axios.post("http://localhost:8000/secrets/", data);
+      const response = await axios.post("http://localhost:8000/keys/", data);
       setKeys((prev) => [...prev, response.data]);
       setIsAddingKey(false);
       successToast("Successfully added key");
@@ -48,7 +48,7 @@ const Home = () => {
   const handleEditKey = handleSubmit(async (data) => {
     try {
       const response = await axios.put(
-        `http://localhost:8000/secrets/${editKeyId}/`,
+        `http://localhost:8000/keys/${editKeyId}/`,
         data
       );
       const index = findIndex(keys, (key) => key.id === response.data.id);
@@ -66,7 +66,7 @@ const Home = () => {
 
   const handleDeleteKey = async (id: number) => {
     try {
-      await axios.delete(`http://localhost:8000/secrets/${id}/`);
+      await axios.delete(`http://localhost:8000/keys/${id}/`);
       const filteredArr = filter(keys, (key) => key.id !== id);
       setKeys(filteredArr);
       successToast("Successfuly deleted key");

@@ -1,8 +1,8 @@
 from rest_framework import viewsets
-from keys.models import Secret
-from keys.serializers import SecretSerializer
+from keys.models import Key
+from keys.serializers import KeySerializer
 
 
-class SecretViewSet(viewsets.ModelViewSet):
-    queryset = Secret.objects.all()
-    serializer_class = SecretSerializer
+class KeyViewSet(viewsets.ModelViewSet):
+    queryset = Key.objects.all()
+    serializer_class = KeySerializer

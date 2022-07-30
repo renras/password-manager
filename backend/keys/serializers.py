@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from keys.models import Secret
+from keys.models import Key
 
 
-class SecretSerializer(serializers.ModelSerializer):
+class KeySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Secret
+        model = Key
         fields = ['id', 'created', 'key', 'value']
