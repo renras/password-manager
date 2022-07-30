@@ -87,7 +87,7 @@ const Home = () => {
   };
 
   return (
-    <section className="d-flex gap-3 p-5 justify-content-center align-items-start">
+    <section className="w-100 d-flex gap-3 p-5 justify-content-center align-items-start">
       <div className="mw-md w-100 p-5 shadow-sm mt-5">
         <h2>Keys</h2>
 

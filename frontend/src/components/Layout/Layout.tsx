@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 interface Props {
   children: JSX.Element[] | JSX.Element;
 }
@@ -5,12 +7,15 @@ interface Props {
 const Layout = ({ children }: Props) => {
   return (
     <>
-      <header className="shadow-sm p-2">
-        <div className="mw-xl w-100 m-auto">
+      <header className="shadow-sm py-2 px-4">
+        <div className="mw-xl w-100 m-auto d-flex align-items-center">
           <h1>KEYS MANAGER</h1>
+          <Link to="/login" className="ms-auto btn btn-primary">
+            Login
+          </Link>
         </div>
       </header>
-      <main>{children}</main>
+      <main className="mw-xl w-100 m-auto">{children}</main>
     </>
   );
 };
