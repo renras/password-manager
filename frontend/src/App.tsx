@@ -1,13 +1,17 @@
 import "./App.css";
 import { ToastContainer } from "react-toastify";
 import Home from "./pages/Home";
+import { Routes, Route } from "react-router-dom";
+import Layout from "./components/Layout/Layout";
 
 function App() {
   return (
-    <div>
-      <Home />
+    <Layout>
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
       <ToastContainer />
-    </div>
+    </Layout>
   );
 }
 
