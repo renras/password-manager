@@ -9,6 +9,7 @@ function App() {
     <Layout>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="*" element={<div>Page Not Found</div>} />
       </Routes>
       <ToastContainer />
     </Layout>
