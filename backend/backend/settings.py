@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'keys',
     'corsheaders',
     'accounts',
-    'djoser'
+    'djoser',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -88,10 +89,10 @@ DATABASES = {
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smt.etheral.email'
+EMAIL_HOST = 'smtp.ethereal.email'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'jonatan29@ethereal.email'
-EMAIL_HOST_PASSWORD = 'RtgTdAvhtRkBNSwZzt'
+EMAIL_HOST_USER = 'lorine.brakus@ethereal.email'
+EMAIL_HOST_PASSWORD = 'VSKrkQe8VC7YYWVuFK'
 EMAIL_USE_TLS = True
 
 # Password validation
@@ -148,7 +149,25 @@ CORS_ORIGIN_WHITELIST = [
 AUTH_USER_MODEL = 'accounts.UserAccount'
 
 REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
     ),
+}
+
+DJOSER = {
+    'USER-CREATE_PASSWORD_RETYPE': True,
+    'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
+    'SEND_CONFIRMATION_EMAIL': True,
+    'SET_PASSWORD_RETYPE': True,
+    'PASSWORD_RESET_CONFIRM_URL': 'password-reset/confirm/{uid}/{token}',
+    'ACTIVATION_URL': 'activate/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': True,
+    'SERIALIZERS': {
+        'user_create': 'accounts.serializers.UserCreateSerializer',
+        'user': 'accounts.serializers.UserCreateSerializer',
+        'user_delete': 'djoser.serializers.UserDeleteSerializer',
+    }
 }
