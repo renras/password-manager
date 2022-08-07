@@ -1,4 +1,4 @@
-const Activation = () => {
+const ActivateAccount = () => {
   return (
     <div className="mw-sm m-auto mt-5 p-5 shadow-sm text-center">
       <h1>Activate your account</h1>
@@ -13,4 +13,4 @@ const Activation = () => {
   );
 };
 
-export default Activation;
+export default ActivateAccount;

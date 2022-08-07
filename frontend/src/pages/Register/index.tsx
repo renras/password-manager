@@ -25,7 +25,6 @@ const Register = () => {
       await axios.post("http://localhost:8000/auth/users/", data);
       navigate("/users/activation/", { replace: true });
     } catch (error) {
-      console.error(error);
       errorToast("Failed to create account. Please try again.");
     }
   });
