@@ -1,0 +1,4 @@
+djoser
+django
+djangorestframework
+django-cors-headers

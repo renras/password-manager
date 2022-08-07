@@ -4,6 +4,7 @@ import isEmail from "validator/lib/isEmail";
 
 interface FormData {
   username: string;
+  name: string;
   email: string;
   password: string;
   confirmPassword: string;
@@ -42,6 +43,25 @@ const Login = () => {
         />
         {errors.username?.message && (
           <p className="text-danger m-0">{errors.username?.message}</p>
+        )}
+
+        {/* username */}
+        <label htmlFor="name" className="mt-4">
+          Name*
+        </label>
+        <input
+          id="name"
+          className="form-control form-control-lg mt-1"
+          {...register("username", {
+            required: "Name is required",
+            maxLength: {
+              value: 100,
+              message: "Only 100 characters is allowed",
+            },
+          })}
+        />
+        {errors.name?.message && (
+          <p className="text-danger m-0">{errors.name?.message}</p>
         )}
 
         {/* email */}
