@@ -1,4 +1,4 @@
-djoser
-django
-djangorestframework
-django-cors-headers
+djoser>=2.1,<2.2
+django>=3.2,<3.3
+djangorestframework>=3.12,<3.13
+django-cors-headers>=3.13,<3.14
