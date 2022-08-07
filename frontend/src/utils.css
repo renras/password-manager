@@ -33,6 +33,11 @@
   background: #fcfcfc;
 }
 
+.link {
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+}
+
 /* remove default button styling */
 button,
 input[type="submit"],
