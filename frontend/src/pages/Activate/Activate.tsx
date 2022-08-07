@@ -1,14 +1,14 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
-const AccountActivated = () => {
+const Activate = () => {
   const { uid, token } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
-  if (isLoading) {
+  useEffect(() => {
     (async () => {
       try {
         await axios.post(
@@ -19,12 +19,15 @@ const AccountActivated = () => {
           }
         );
       } catch (error) {
+        console.error(error);
         setIsError(true);
       } finally {
         setIsLoading(false);
       }
     })();
+  }, []);
 
+  if (isLoading) {
     return <div>Loading...</div>;
   }
 
@@ -34,7 +37,7 @@ const AccountActivated = () => {
         <div className="mw-sm m-auto mt-5 p-5 shadow-sm text-center">
           <h1>Something went wrong</h1>
           <p className="fs-5 mt-4">
-            Either the token has expired or the account is already activated.
+            Sorry something went wrong. Please try again.
           </p>
         </div>
       </div>
@@ -55,4 +58,4 @@ const AccountActivated = () => {
   );
 };
 
-export default AccountActivated;
+export default Activate;

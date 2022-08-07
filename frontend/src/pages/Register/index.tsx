@@ -23,7 +23,7 @@ const Register = () => {
   const onSubmit = handleSubmit(async (data) => {
     try {
       await axios.post("http://localhost:8000/auth/users/", data);
-      navigate("/users/activation/", { replace: true });
+      navigate("/activate", { replace: true });
     } catch (error) {
       errorToast("Failed to create account. Please try again.");
     }
