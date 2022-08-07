@@ -1,22 +1,34 @@
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import isEmail from "validator/lib/isEmail";
+import { errorToast } from "utils/toast";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 interface FormData {
   username: string;
   name: string;
   email: string;
   password: string;
-  confirmPassword: string;
+  "re-password": string;
 }
 
-const Login = () => {
+const Register = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>();
-  const onSubmit = handleSubmit((data) => console.log(data));
+  const navigate = useNavigate();
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      await axios.post("http://localhost:8000/auth/users/", data);
+      navigate("/", { replace: true });
+    } catch (error) {
+      console.error(error);
+      errorToast("Failed to create account. Please try again.");
+    }
+  });
 
   return (
     <div>
@@ -52,7 +64,7 @@ const Login = () => {
         <input
           id="name"
           className="form-control form-control-lg mt-1"
-          {...register("username", {
+          {...register("name", {
             required: "Name is required",
             maxLength: {
               value: 100,
@@ -107,23 +119,23 @@ const Login = () => {
         )}
 
         {/* confirm password */}
-        <label htmlFor="confirm-password" className="mt-4">
+        <label htmlFor="re-password" className="mt-4">
           Confirm Password*
         </label>
         <input
-          id="confirm-password"
+          id="re-password"
           type="password"
           className="form-control form-control-lg mt-1"
-          {...register("confirmPassword", {
-            required: "Confirm password is required",
+          {...register("re-password", {
+            required: "Re-type password",
             maxLength: {
               value: 100,
               message: "Only 100 characters is allowed",
             },
           })}
         />
-        {errors.confirmPassword?.message && (
-          <p className="text-danger m-0">{errors.confirmPassword?.message}</p>
+        {errors["re-password"]?.message && (
+          <p className="text-danger m-0">{errors["re-password"]?.message}</p>
         )}
 
         <button className="btn btn-primary btn-lg mt-5 w-100">SIGN UP</button>
@@ -135,4 +147,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
